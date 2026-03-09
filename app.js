@@ -1,5 +1,5 @@
 // ==============================
-// RICHY — DevOps Site JS
+// RICHLOVE — DevOps Site JS
 // Dynamic date, particles, effects
 // ==============================
 
