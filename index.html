@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Richlove | DevOps Deployment</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Animated grid background -->
+  <div class="grid-bg"></div>
+  <div class="scanline"></div>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-mark">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">DEVOPS</span>
+        <span class="logo-bracket">]</span>
+      </div>
+      <nav class="nav">
+        <a href="#student">Student</a>
+        <a href="#stack">Stack</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#tools">Tools</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="student">
+    <div class="hero-content">
+      <div class="status-bar">
+        <span class="status-dot"></span>
+        <span>DEPLOYMENT STATUS: <strong class="green">LIVE</strong></span>
+        <span class="sep">|</span>
+        <span>ENV: <strong class="green">PRODUCTION</strong></span>
+        <span class="sep">|</span>
+        <span>REGION: <strong class="amber">AWS EC2</strong></span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="line1">STUDENT</span>
+        <span class="line2">RICHLOVE</span>
+      </h1>
+
+      <div class="deploy-card">
+        <div class="deploy-card-inner">
+          <div class="deploy-row">
+            <span class="label">👤 Student Name</span>
+            <span class="value">Richlove</span>
+          </div>
+          <div class="divider"></div>
+          <div class="deploy-row">
+            <span class="label">📅 Date of Deployment</span>
+            <span class="value" id="deploy-date">Loading...</span>
+          </div>
+          <div class="divider"></div>
+          <div class="deploy-row">
+            <span class="label">⏱ Timestamp</span>
+            <span class="value" id="deploy-time">Loading...</span>
+          </div>
+          <div class="divider"></div>
+          <div class="deploy-row">
+            <span class="label">☁️ Platform</span>
+            <span class="value">AWS EC2 via GitHub Actions</span>
+          </div>
+          <div class="divider"></div>
+          <div class="deploy-row">
+            <span class="label">🔁 Pipeline</span>
+            <span class="value">CI/CD — GitHub Actions</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal-block">
+        <div class="terminal-bar">
+          <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+          <span class="t-title">bash — deploy.sh</span>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+          <div class="t-line"><span class="prompt">$</span> git push origin main</div>
+          <div class="t-line typed"><span class="prompt">→</span> Triggering GitHub Actions workflow...</div>
+          <div class="t-line typed delay1"><span class="prompt">→</span> Building Docker image...</div>
+          <div class="t-line typed delay2"><span class="prompt">→</span> Pushing to AWS ECR...</div>
+          <div class="t-line typed delay3"><span class="prompt">→</span> SSH into EC2 instance...</div>
+          <div class="t-line typed delay4"><span class="prompt">→</span> Pulling latest image & restarting containers...</div>
+          <div class="t-line typed delay5 success"><span class="prompt">✔</span> Deployment complete! Site is live.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="stack-section" id="stack">
+    <div class="section-header">
+      <h2><span class="bracket">//</span> TECH STACK</h2>
+      <p>Core tools powering this deployment</p>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/docker.svg" alt="Docker" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">🐋</div>
+        </div>
+        <h3>Docker</h3>
+        <p>Containerization platform for packaging apps and their dependencies into portable containers.</p>
+        <div class="tag">Containerization</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/kubernetes.svg" alt="Kubernetes" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">☸️</div>
+        </div>
+        <h3>Kubernetes</h3>
+        <p>Container orchestration system for automating deployment, scaling, and management of containerized apps.</p>
+        <div class="tag">Orchestration</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/aws.svg" alt="AWS" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">☁️</div>
+        </div>
+        <h3>AWS EC2</h3>
+        <p>Amazon Elastic Compute Cloud providing scalable virtual servers for running applications in the cloud.</p>
+        <div class="tag">Cloud Infrastructure</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/linux.svg" alt="Linux" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">🐧</div>
+        </div>
+        <h3>Linux</h3>
+        <p>The foundation of modern DevOps. Ubuntu/Amazon Linux powers EC2 instances and containerized workloads.</p>
+        <div class="tag">Operating System</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/github-actions.svg" alt="GitHub Actions" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">⚙️</div>
+        </div>
+        <h3>GitHub Actions</h3>
+        <p>CI/CD automation platform that builds, tests, and deploys code directly from GitHub repositories.</p>
+        <div class="tag">CI/CD</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/terraform.svg" alt="Terraform" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">🏗️</div>
+        </div>
+        <h3>Terraform</h3>
+        <p>Infrastructure as Code tool enabling versioned, reproducible cloud infrastructure provisioning.</p>
+        <div class="tag">IaC</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/nginx.svg" alt="Nginx" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">🌐</div>
+        </div>
+        <h3>Nginx</h3>
+        <p>High-performance web server and reverse proxy used to serve applications and handle load balancing.</p>
+        <div class="tag">Web Server</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon">
+          <img src="images/git.svg" alt="Git" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="icon-fallback" style="display:none">📦</div>
+        </div>
+        <h3>Git</h3>
+        <p>Distributed version control system at the heart of modern software development and DevOps workflows.</p>
+        <div class="tag">Version Control</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pipeline Section -->
+  <section class="pipeline-section" id="pipeline">
+    <div class="section-header">
+      <h2><span class="bracket">//</span> CI/CD PIPELINE</h2>
+      <p>From commit to production in seconds</p>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-icon">📝</div>
+        <div class="pipe-label">Code Commit</div>
+        <div class="pipe-sub">git push</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">⚙️</div>
+        <div class="pipe-label">GitHub Actions</div>
+        <div class="pipe-sub">Trigger Workflow</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🐋</div>
+        <div class="pipe-label">Docker Build</div>
+        <div class="pipe-sub">Build & Tag Image</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">✅</div>
+        <div class="pipe-label">Tests Pass</div>
+        <div class="pipe-sub">Run Test Suite</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">☁️</div>
+        <div class="pipe-label">AWS EC2 Deploy</div>
+        <div class="pipe-sub">SSH & Pull Image</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step active">
+        <div class="pipe-icon">🚀</div>
+        <div class="pipe-label">LIVE</div>
+        <div class="pipe-sub">Production</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools Logos Section -->
+  <section class="logos-section" id="tools">
+    <div class="section-header">
+      <h2><span class="bracket">//</span> ECOSYSTEM</h2>
+      <p>The full DevOps toolchain</p>
+    </div>
+    <div class="logos-ticker">
+      <div class="logos-track">
+        <div class="logo-item">🐋 Docker</div>
+        <div class="logo-item">☸️ Kubernetes</div>
+        <div class="logo-item">☁️ AWS</div>
+        <div class="logo-item">🐧 Linux</div>
+        <div class="logo-item">⚙️ GitHub Actions</div>
+        <div class="logo-item">🏗️ Terraform</div>
+        <div class="logo-item">🌐 Nginx</div>
+        <div class="logo-item">📦 Git</div>
+        <div class="logo-item">🔍 Prometheus</div>
+        <div class="logo-item">📊 Grafana</div>
+        <div class="logo-item">🔐 Vault</div>
+        <div class="logo-item">🐙 Helm</div>
+        <!-- Repeat for seamless scroll -->
+        <div class="logo-item">🐋 Docker</div>
+        <div class="logo-item">☸️ Kubernetes</div>
+        <div class="logo-item">☁️ AWS</div>
+        <div class="logo-item">🐧 Linux</div>
+        <div class="logo-item">⚙️ GitHub Actions</div>
+        <div class="logo-item">🏗️ Terraform</div>
+        <div class="logo-item">🌐 Nginx</div>
+        <div class="logo-item">📦 Git</div>
+        <div class="logo-item">🔍 Prometheus</div>
+        <div class="logo-item">📊 Grafana</div>
+        <div class="logo-item">🔐 Vault</div>
+        <div class="logo-item">🐙 Helm</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">[RICHLOVE]</div>
+        <p>DevOps Assignment — AWS EC2 Deployment via GitHub Actions CI/CD Pipeline.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Deployment Info</h4>
+        <p>Student: <strong>Richlove</strong></p>
+        <p>Platform: <strong>AWS EC2</strong></p>
+        <p>CI/CD: <strong>GitHub Actions</strong></p>
+        <p>Date: <strong id="footer-date"></strong></p>
+      </div>
+      <div class="footer-col">
+        <h4>Stack</h4>
+        <p>Docker · Kubernetes</p>
+        <p>AWS · Linux · Nginx</p>
+        <p>Terraform · Git</p>
+        <p>GitHub Actions</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Richlove — DevOps Assignment</span>
+      <span class="footer-status"><span class="status-dot small"></span> All systems operational</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
