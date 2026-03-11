@@ -1,4 +1,4 @@
-name: Richy EC2 Deploy
+name: Richy EC2 Deploy with OIDC Token
 
 on:
   push:
