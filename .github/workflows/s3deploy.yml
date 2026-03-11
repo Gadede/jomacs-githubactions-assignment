@@ -2,13 +2,12 @@ name: S3 Deploy with OIDC Token
 on:
   push:
     branches:
-      - main
       - s3deploy
 
 permissions:
   id-token: write
   contents: read
-  
+
 jobs:
   deploy:
     name: Deploy
