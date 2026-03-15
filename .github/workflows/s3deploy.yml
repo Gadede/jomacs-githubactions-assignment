@@ -1,4 +1,5 @@
-name: S3 Deploy with OIDC Token
+name: S3 Deploy with OIDC 
+
 on:
   push:
     branches:
