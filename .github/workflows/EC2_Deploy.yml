@@ -1,0 +1,40 @@
+name: Richy EC2 Deployment Assignment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    environment: prod
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v6
+
+      - name: aws configure
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          aws-region: ap-southeast-2
+
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo apt-get -y update
+            sudo apt-get install -y apache2
+            sudo systemctl daemon-reload
+            sudo systemctl start apache2
+            sudo systemctl enable apache2
+            cd ${{ secrets.TARGET_DIR }}
+            # Remove existing contents of /var/www/html
+            sudo rm -rf /var/www/html/*
+            # Move new files to /var/www/html
+            sudo mv * /var/www/html
