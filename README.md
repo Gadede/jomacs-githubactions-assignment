@@ -1,6 +1,6 @@
 
-Git hub actions assignment EC2 Deploy with OIDC authentication 
+# Github actions assignment: EC2 Deploy with OIDC authentication 
 
-Access DNS:  13.211.163.232
+# Access DNS/IP:  13.211.163.232
 
 -- Richlove
