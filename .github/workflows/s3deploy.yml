@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - s3deploy
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Enter your name'
+        required: true
+        default: 'Richy'    
 
 permissions:
   id-token: write
