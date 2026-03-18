@@ -1,5 +1,6 @@
-github actions assignment : S3 deployment with OIDC 
 
-S3 Resource Access Link: http://jomacs-githubactions-assignment-s3bucket.s3-website-ap-southeast-2.amazonaws.com 
+Git hub actions assignment EC2 Deploy with OIDC authentication 
+
+Access DNS:  13.211.163.232
 
 -- Richlove
