@@ -33,3 +33,33 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.ECR_REPOSITORY_URI }}:latest .
+                                                         # removed unused id: build-image
+
+      - name: Push Docker image to Amazon ECR           # removed redundant Tag step
+        run: |
+          docker push ${{ secrets.ECR_REPOSITORY_URI }}:latest
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ./task-definition.json
+          container-name: ${{ secrets.CONTAINER_NAME }}
+          image: ${{ secrets.ECR_REPOSITORY_URI }}:latest
+
+      - name: Debug Rendered Task Definition
+        run: cat ${{ steps.task-def.outputs.task-definition }}
+
+      - name: Debug Secrets                             # fixed: was missing "- name:" dash
+        run: |
+          echo "Service: ${{ secrets.ECS_SERVICE }}"
+          echo "Cluster: ${{ secrets.ECS_CLUSTER }}"
+          echo "Container: ${{ secrets.CONTAINER_NAME }}"
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ secrets.ECS_SERVICE }}
+          cluster: ${{ secrets.ECS_CLUSTER }}
+          wait-for-service-stability: true
