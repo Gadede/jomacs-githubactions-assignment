@@ -1,204 +1,197 @@
-// ==============================
-// RICHLOVE — DevOps Site JS
-// Dynamic date, particles, effects
-// ==============================
+/* =============================================
+   RICHLOVE SAMUEL SOGLO — Resume Portfolio
+   app.js
+   ============================================= */
 
-// --- Deployment Date/Time (system-generated) ---
-function setDeploymentDate() {
-  const now = new Date();
+/* ── 1. PARTICLE CANVAS ───────────────────────── */
+(function initCanvas() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
 
-  const dateOptions = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  };
-
-  const timeOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZoneName: 'short'
-  };
-
-  const formattedDate = now.toLocaleDateString('en-US', dateOptions);
-  const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
-
-  const deployDateEl = document.getElementById('deploy-date');
-  const deployTimeEl = document.getElementById('deploy-time');
-  const footerDateEl = document.getElementById('footer-date');
-  const yearEl = document.getElementById('year');
-
-  if (deployDateEl) deployDateEl.textContent = formattedDate;
-  if (deployTimeEl) deployTimeEl.textContent = formattedTime;
-  if (footerDateEl) footerDateEl.textContent = formattedDate;
-  if (yearEl) yearEl.textContent = now.getFullYear();
-}
-
-// --- Particle System ---
-function createParticles() {
-  const container = document.getElementById('particles');
-  if (!container) return;
-
-  const colors = ['#00d4ff', '#00ff88', '#ffaa00'];
-  const count = 40;
-
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement('div');
-    p.classList.add('particle');
-
-    const size = Math.random() * 3 + 1;
-    const left = Math.random() * 100;
-    const duration = Math.random() * 15 + 10;
-    const delay = Math.random() * 20;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-
-    p.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      left: ${left}%;
-      background: ${color};
-      animation-duration: ${duration}s;
-      animation-delay: -${delay}s;
-      box-shadow: 0 0 ${size * 2}px ${color};
-    `;
-
-    container.appendChild(p);
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
-}
+  resize();
+  window.addEventListener('resize', resize);
 
-// --- Typing effect for terminal (re-trigger on scroll) ---
-function initTerminalTyping() {
-  const lines = document.querySelectorAll('.t-line');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        lines.forEach(line => {
-          line.style.animationPlayState = 'running';
-        });
-        observer.disconnect();
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.r = Math.random() * 1.5 + 0.3;
+      this.vx = (Math.random() - .5) * .32;
+      this.vy = (Math.random() - .5) * .32;
+      this.alpha = Math.random() * .45 + .1;
+      const cols = ['rgba(0,229,200,', 'rgba(255,194,74,', 'rgba(255,107,138,'];
+      this.col = cols[Math.floor(Math.random() * 3)];
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = this.col + this.alpha + ')';
+      ctx.fill();
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+    }
+  }
+
+  for (let i = 0; i < 110; i++) particles.push(new Particle());
+
+  function drawLines() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 105) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(0,229,200,${.055 * (1 - d / 105)})`;
+          ctx.lineWidth = .5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
       }
-    });
-  }, { threshold: 0.3 });
+    }
+  }
 
-  const terminal = document.querySelector('.terminal-block');
-  if (terminal) observer.observe(terminal);
-}
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    drawLines();
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
 
-// --- Scroll reveal for cards ---
-function initScrollReveal() {
-  const cards = document.querySelectorAll('.tool-card, .pipe-step, .deploy-card');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, i * 80);
-        observer.unobserve(entry.target);
+/* ── 2. SPA NAVIGATION ─────────────────────────── */
+(function initNav() {
+  const links     = document.querySelectorAll('.nav-link[data-page]');
+  const pages     = document.querySelectorAll('.page');
+  const mobileBtn = document.querySelector('.nav-mobile-btn');
+  const navLinks  = document.querySelector('.nav-links');
+
+  function showPage(id) {
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + id));
+    links.forEach(l => l.classList.toggle('active', l.dataset.page === id));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (navLinks) navLinks.classList.remove('open');
+    // restart stats counter when going home
+    if (id === 'home') setTimeout(animateStats, 200);
+  }
+
+  links.forEach(l => l.addEventListener('click', () => showPage(l.dataset.page)));
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => showPage(btn.dataset.goto));
+  });
+  if (mobileBtn) mobileBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  showPage('home');
+})();
+
+/* ── 3. SCROLL PROGRESS BAR ────────────────────── */
+(function initProgressBar() {
+  const bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct   = total > 0 ? (window.scrollY / total) * 100 : 0;
+    bar.style.width = pct + '%';
+  });
+})();
+
+/* ── 4. DARK / LIGHT MODE TOGGLE ───────────────── */
+(function initThemeToggle() {
+  const btn  = document.getElementById('themeToggle');
+  const body = document.body;
+  if (!btn) return;
+
+  // restore saved preference
+  if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light');
+    btn.textContent = '☀️';
+  }
+
+  btn.addEventListener('click', () => {
+    const isLight = body.classList.toggle('light');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+})();
+
+/* ── 5. TYPEWRITER ANIMATION ───────────────────── */
+(function initTypewriter() {
+  const el = document.getElementById('typewriter');
+  if (!el) return;
+
+  const phrases = [
+    'IT & Cloud Engineer',
+    'DevOps Enthusiast',
+    'Azure Certified Pro',
+    'Cybersecurity Specialist',
+    'IT Systems Administrator',
+  ];
+
+  let phraseIdx = 0, charIdx = 0, deleting = false;
+
+  function type() {
+    const current = phrases[phraseIdx];
+    if (deleting) {
+      charIdx--;
+      el.textContent = current.slice(0, charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        setTimeout(type, 400);
+        return;
       }
-    });
-  }, { threshold: 0.1 });
+      setTimeout(type, 45);
+    } else {
+      charIdx++;
+      el.textContent = current.slice(0, charIdx);
+      if (charIdx === current.length) {
+        deleting = true;
+        setTimeout(type, 1800); // pause before deleting
+        return;
+      }
+      setTimeout(type, 80);
+    }
+  }
+  setTimeout(type, 600);
+})();
 
-  cards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(24px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(card);
+/* ── 6. STATS COUNTER ANIMATION ────────────────── */
+function animateStats() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 1400;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutExpo
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(update);
   });
 }
 
-// --- Live clock tick ---
-function startLiveClock() {
-  setInterval(() => {
-    const deployTimeEl = document.getElementById('deploy-time');
-    if (deployTimeEl) {
-      const now = new Date();
-      deployTimeEl.textContent = now.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZoneName: 'short'
-      });
-    }
-  }, 1000);
-}
+/* ── 7. CARD ENTRANCE ANIMATIONS ──────────────── */
+// No JS-based reveal — pure CSS handles all entrance animations
+// Cards animate in via CSS when their page becomes .active
+// This avoids any opacity:0 getting stuck from IntersectionObserver
 
-// --- Glitch effect on hero title ---
-function initGlitch() {
-  const title = document.querySelector('.line2');
-  if (!title) return;
-
-  setInterval(() => {
-    if (Math.random() > 0.92) {
-      title.style.transform = `skewX(${(Math.random() - 0.5) * 4}deg)`;
-      title.style.filter = `drop-shadow(${(Math.random()-0.5)*6}px 0 8px #00d4ff)`;
-      setTimeout(() => {
-        title.style.transform = '';
-        title.style.filter = '';
-      }, 80);
-    }
-  }, 600);
-}
-
-// --- Pipeline step highlight ---
-function animatePipeline() {
-  const steps = document.querySelectorAll('.pipe-step');
-  if (!steps.length) return;
-
-  let current = 0;
-  const interval = setInterval(() => {
-    steps.forEach(s => s.classList.remove('active'));
-    steps[current].classList.add('active');
-    current = (current + 1) % steps.length;
-  }, 1200);
-
-  // Stop after full cycle and keep last step (LIVE) active
-  setTimeout(() => {
-    clearInterval(interval);
-    steps.forEach(s => s.classList.remove('active'));
-    steps[steps.length - 1].classList.add('active');
-  }, 1200 * (steps.length + 1));
-}
-
-// --- Init everything ---
-document.addEventListener('DOMContentLoaded', () => {
-  setDeploymentDate();
-  createParticles();
-  initScrollReveal();
-  initGlitch();
-  startLiveClock();
-
-  // Delay pipeline animation until visible
-  const pipeSection = document.querySelector('.pipeline-section');
-  if (pipeSection) {
-    const obs = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        animatePipeline();
-        obs.disconnect();
-      }
-    }, { threshold: 0.3 });
-    obs.observe(pipeSection);
-  }
-
-  // Smooth nav active state
-  const navLinks = document.querySelectorAll('.nav a');
-  const sections = document.querySelectorAll('section[id]');
-
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.style.color = '';
-          if (link.getAttribute('href') === '#' + entry.target.id) {
-            link.style.color = 'var(--green)';
-          }
-        });
-      }
-    });
-  }, { threshold: 0.5 });
-
-  sections.forEach(s => sectionObserver.observe(s));
+// Kick off stats on load
+window.addEventListener('load', () => {
+  setTimeout(animateStats, 500);
 });
