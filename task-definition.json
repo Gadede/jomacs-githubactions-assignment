@@ -1,8 +1,5 @@
 {
-  "family": "myresumeapp_td",
-  "networkMode": "bridge",
-  "requiresCompatibilities": ["EC2"],
-  "executionRoleArn": "arn:aws:iam::106601314275:role/ecsTaskExecutionRole",
+  "taskDefinitionArn": "arn:aws:ecs:ap-southeast-2:106601314275:task-definition/richyresumeapp_td:1",
   "containerDefinitions": [
     {
       "name": "richy_resume_container",
@@ -10,7 +7,6 @@
       "cpu": 1024,
       "memory": 3072,
       "memoryReservation": 1024,
-      "essential": true,
       "portMappings": [
         {
           "name": "richy_resume_container-80-tcp",
@@ -20,22 +16,81 @@
           "appProtocol": "http"
         }
       ],
+      "essential": true,
       "environment": [],
       "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
       "ulimits": [],
-      "systemControls": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/myresumeapp_td",
+          "awslogs-group": "/ecs/richyresumeapp_td",
           "awslogs-create-group": "true",
           "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
-      }
+      },
+      "systemControls": []
     }
-  ]
+  ],
+  "family": "richyresumeapp_td",
+  "taskRoleArn": "arn:aws:iam::106601314275:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::106601314275:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE",
+    "MANAGED_INSTANCES"
+  ],
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2026-03-19T16:40:43.569Z",
+  "registeredBy": "arn:aws:iam::106601314275:user/AdminRichy",
+  "enableFaultInjection": false,
+  "tags": []
 }

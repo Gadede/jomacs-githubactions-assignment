@@ -1,4 +1,4 @@
-name: Build and Push to AWS ECR, then deploy to ECS Fargate
+name: Build and Push to AWS ECR
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 permissions:
   contents: 'read'
   id-token: 'write'
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
