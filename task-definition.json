@@ -1,39 +1,49 @@
 {
-  "name": "richy_resume_container",
-  "image": "106601314275.dkr.ecr.ap-southeast-2.amazonaws.com/richy_resume_ecr:latest",
-  "cpu": 1024,
-  "memory": 3072,
-  "memoryReservation": 1024,
-  "portMappings": [
+  "family": "myresumeapp_td",
+  "networkMode": "bridge",
+  "requiresCompatibilities": ["EC2"],
+  "cpu": "1024",
+  "memory": "3072",
+  "executionRoleArn": "arn:aws:iam::106601314275:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
     {
-      "name": "richy_resume_container-80-tcp",
-      "containerPort": 80,
-      "hostPort": 80,
-      "protocol": "tcp",
-      "appProtocol": "http"
-    }
-  ],
-  "essential": true,
-  "environment": [],
-  "environmentFiles": [],
-  "mountPoints": [],
-  "volumesFrom": [],
-  "ulimits": [],
-  "logConfiguration": {
-    "logDriver": "awslogs",
-    "options": {
-      "awslogs-group": "/ecs/myresumeapp_td",
-      "awslogs-create-group": "true",
-      "awslogs-region": "ap-southeast-2",
-      "awslogs-stream-prefix": "ecs"
-    },
-    "secretOptions": []
-  },
-  "systemControls": [],
-  "resourceRequirements": [
-    {
-      "value": "1",
-      "type": "GPU"
+      "name": "richy_resume_container",
+      "image": "106601314275.dkr.ecr.ap-southeast-2.amazonaws.com/richy_resume_ecr:latest",
+      "cpu": 1024,
+      "memory": 3072,
+      "memoryReservation": 1024,
+      "portMappings": [
+        {
+          "name": "richy_resume_container-80-tcp",
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/myresumeapp_td",
+          "awslogs-create-group": "true",
+          "awslogs-region": "ap-southeast-2",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "systemControls": [],
+      "resourceRequirements": [
+        {
+          "value": "1",
+          "type": "GPU"
+        }
+      ]
     }
   ]
 }
