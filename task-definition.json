@@ -1,6 +1,6 @@
 {
   "name": "richy_resume_container",
-  "image": "106601314275.dkr.ecr.ap-southeast-2.amazonaws.com/richy_resume:latest",
+  "image": "106601314275.dkr.ecr.ap-southeast-2.amazonaws.com/richy_resume_ecr:latest",
   "cpu": 1024,
   "memory": 3072,
   "memoryReservation": 1024,
