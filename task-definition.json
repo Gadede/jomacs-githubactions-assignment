@@ -2,8 +2,6 @@
   "family": "myresumeapp_td",
   "networkMode": "bridge",
   "requiresCompatibilities": ["EC2"],
-  "cpu": "1024",
-  "memory": "3072",
   "executionRoleArn": "arn:aws:iam::106601314275:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
@@ -12,6 +10,7 @@
       "cpu": 1024,
       "memory": 3072,
       "memoryReservation": 1024,
+      "essential": true,
       "portMappings": [
         {
           "name": "richy_resume_container-80-tcp",
@@ -21,12 +20,12 @@
           "appProtocol": "http"
         }
       ],
-      "essential": true,
       "environment": [],
       "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
       "ulimits": [],
+      "systemControls": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -36,14 +35,7 @@
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
-      },
-      "systemControls": [],
-      "resourceRequirements": [
-        {
-          "value": "1",
-          "type": "GPU"
-        }
-      ]
+      }
     }
   ]
 }
