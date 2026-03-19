@@ -1,4 +1,4 @@
-name: ECR to Ec2 Deployment
+name: ECR to Ec2 Deploy
 
 on:
   push:
