@@ -5,14 +5,10 @@ on:
     branches:
       - beanstalk_deploy
 
-permissions:
-  id-token: write
-  contents: read
-
 env:
   AWS_APP_NAME: richyresume
   AWS_ENV_NAME: Richyresume-env
-  AWS_REGION: ap-northeast-1 
+  AWS_REGION: ap-northeast-1
 
 jobs:
   deploy:
@@ -21,25 +17,51 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4              
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v6   
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
 
       - name: Zip application files
-        run: zip -r resume.zip index.html style.css app.js   
+        run: zip resume.zip index.html style.css app.js
+
+      - name: Upload zip to S3
+        run: |
+          aws s3 cp resume.zip s3://${{ secrets.EB_BUCKET_NAME }}/resume-v${{ github.run_number }}.zip \
+            --region ap-northeast-1
+
+      - name: Create EB application version
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name ${{ env.AWS_APP_NAME }} \
+            --version-label v-${{ github.run_number }} \
+            --source-bundle S3Bucket=${{ secrets.EB_BUCKET_NAME }},S3Key=resume-v${{ github.run_number }}.zip \
+            --region ${{ env.AWS_REGION }}
 
       - name: Deploy to Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v22
-        with:
-          region: ${{ env.AWS_REGION }}       
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ env.AWS_APP_NAME }}
-          environment_name: ${{ env.AWS_ENV_NAME }}
-          version_label: v-${{ github.run_number }}
-          existing_bucket_name: ${{ secrets.EB_BUCKET_NAME }}
-          deployment_package: resume.zip
+        run: |
+          aws elasticbeanstalk update-environment \
+            --application-name ${{ env.AWS_APP_NAME }} \
+            --environment-name ${{ env.AWS_ENV_NAME }} \
+            --version-label v-${{ github.run_number }} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for deployment to complete
+        run: |
+          aws elasticbeanstalk wait environment-updated \
+            --application-name ${{ env.AWS_APP_NAME }} \
+            --environment-names ${{ env.AWS_ENV_NAME }} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Print environment URL
+        run: |
+          aws elasticbeanstalk describe-environments \
+            --application-name ${{ env.AWS_APP_NAME }} \
+            --environment-names ${{ env.AWS_ENV_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'Environments[0].CNAME' \
+            --output text
