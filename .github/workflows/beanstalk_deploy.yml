@@ -1,0 +1,41 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - beanstalk_deploy
+
+env:
+  AWS_APP_NAME: richyresume
+  AWS_ENV_NAME: Richyresume-env
+  AWS_REGION: ap-northeast-1 
+
+jobs:
+  deploy:
+    name: Deploy to Elastic Beanstalk
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4              
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6   
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Zip application files
+        run: zip -r resume.zip index.html style.css app.js   
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          region: ${{ env.AWS_REGION }}       
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ env.AWS_APP_NAME }}
+          environment_name: ${{ env.AWS_ENV_NAME }}
+          version_label: v-${{ github.run_number }}
+          existing_bucket_name: ${{ secrets.EB_BUCKET_NAME }}
+          deployment_package: resume.zip
