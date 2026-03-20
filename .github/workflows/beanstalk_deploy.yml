@@ -5,6 +5,10 @@ on:
     branches:
       - beanstalk_deploy
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AWS_APP_NAME: richyresume
   AWS_ENV_NAME: Richyresume-env
