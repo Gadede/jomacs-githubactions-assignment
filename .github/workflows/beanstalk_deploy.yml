@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_APP_NAME: richyresume
-  AWS_ENV_NAME: Richyresume-env
+  AWS_ENV_NAME: Richyresume-env-1
   AWS_REGION: ap-northeast-1
 
 jobs:
