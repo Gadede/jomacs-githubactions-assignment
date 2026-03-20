@@ -4,6 +4,8 @@
 
 ##Images from the AWS Console are below:
 
+<img width="1874" height="926" alt="image" src="https://github.com/user-attachments/assets/707c9348-e636-40b0-a3fa-bce62c3be6bf" />
+
 <img width="1915" height="827" alt="image" src="https://github.com/user-attachments/assets/7dba5f83-195a-416f-b7da-d0054b091df8" />
 
 <img width="1896" height="901" alt="image" src="https://github.com/user-attachments/assets/2823db4f-fab6-406f-95ac-3b6c41c231e1" />
