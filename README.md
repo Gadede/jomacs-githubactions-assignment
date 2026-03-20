@@ -1,6 +1,5 @@
-# ECR Deployment with OIDC
-## Yet to be completed
+#Resume App Deployment to Ealstic Beanstalk
 
-In Progess
+##Elastic Beanstalk deployment url: http://richyresume-env-1.eba-szmp3nvy.ap-northeast-1.elasticbeanstalk.com/
 
---Richlove
+ --Richlove
