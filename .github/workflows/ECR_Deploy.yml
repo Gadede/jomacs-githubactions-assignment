@@ -3,7 +3,7 @@ name: ECR-EC2 Deployment
 on:
   push:
     branches:
-      - main
+      - ECR_Deploy
     paths-ignore:
       - 'docs/**'
       - 'readme.md'
