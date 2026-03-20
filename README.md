@@ -1,6 +1,6 @@
-# ECR Deployment with OIDC
+# ECR Deployment with OIDC - Completed
 
-## Deplyment DNS Access: 47.129.172.245 / 47.130.3.96
+## ECR - EC2 Deployment DNS Access: 47.129.172.245 / 47.130.3.96
 
 ##Images from the AWS Console are below:
 
@@ -12,6 +12,8 @@
 
 
 <img width="1901" height="904" alt="image" src="https://github.com/user-attachments/assets/7fea2803-8e48-42be-9b40-99c6b6aff30a" />
+
+
 
 
 --Richlove
